@@ -88,7 +88,6 @@ public class ZookeeperClient {
     @Test
     public void exist() throws KeeperException, InterruptedException {
         Stat isExists = zkClient.exists("/atguigu", false);
-
         System.out.println(isExists == null ? "no exist" : "exist");
     }
 
