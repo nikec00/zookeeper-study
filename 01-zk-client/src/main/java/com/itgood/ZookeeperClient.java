@@ -92,4 +92,18 @@ public class ZookeeperClient {
     }
 
 
+    /**
+     * 修改节点数据
+     */
+    @Test
+    public void set() {
+        try {
+            zkClient.setData("/atguigu","你好啊".getBytes(),-1);
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
