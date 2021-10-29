@@ -22,8 +22,10 @@ public class ZookeeperClient {
 
     private static Properties properties;
 
+    // 链接地址
     private static String connectString = "192.168.60.169:2181,192.168.60.170:2181,192.168.60.171:2181";
 
+    // 服务端和客户端的连接时间
     private static Integer sessionTimeout = 2000000;
 
     private ZooKeeper zkClient;
