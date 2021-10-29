@@ -1,16 +1,13 @@
 package com.itgood;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Properties;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,12 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ZookeeperClient {
 
-    private static Properties properties;
-
-    // 链接地址
     private static String connectString = "192.168.60.169:2181,192.168.60.170:2181,192.168.60.171:2181";
 
-    // 服务端和客户端的连接时间
     private static Integer sessionTimeout = 2000000;
 
     private ZooKeeper zkClient;
@@ -37,9 +30,10 @@ public class ZookeeperClient {
         zkClient = new ZooKeeper(connectString, sessionTimeout, new Watcher() {
             @Override
             public void process(WatchedEvent watchedEvent) {
+                // 收到事件通知后的回调函数（用户的业务逻辑）
                 System.out.println(watchedEvent.getType() + "----" + watchedEvent.getPath());
                 try {
-                    //获取zk下的节点信息
+                    // 再次启动监听
                     children = zkClient.getChildren("/", true);
                     for (String child : children) {
                         System.out.println(child);
@@ -72,6 +66,7 @@ public class ZookeeperClient {
 
     /**
      * 创建节点
+     * 参数1：要创建节点的路径； 参数2：节点数据；  参数3：节点权限；   参数4：节点类型
      *
      * @throws KeeperException
      * @throws InterruptedException
@@ -100,12 +95,20 @@ public class ZookeeperClient {
     @Test
     public void set() {
         try {
-            zkClient.setData("/atguigu","你好啊".getBytes(),-1);
+            zkClient.setData("/atguigu", "你好啊".getBytes(), -1);
         } catch (KeeperException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+    class IStringCallback implements AsyncCallback.StringCallback {
+        @Override
+        public void processResult(int rc, String path, Object ctx, String name) {
+            System.out.println("Create path result: [" + rc + "," + path + "," + ctx + ", real path name " + name);
+        }
+    }
 
 }
+
+
