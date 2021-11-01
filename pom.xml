@@ -12,6 +12,7 @@
         <module>01-zk-client</module>
         <module>02-zk-dynamic</module>
         <module>00-zk-common</module>
+        <module>03-zk-dustributed</module>
     </modules>
 
     <properties>
